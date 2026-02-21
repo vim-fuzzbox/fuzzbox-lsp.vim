@@ -19,6 +19,7 @@ git clone https://github.com/vim-fuzzbox/fuzzbox-lsp.vim ~/.vim/pack/plugins/sta
 
 ## Usage
 
-| Command                 | Description
-| ---                     | ---
-| FuzzyLspDocumentSymbols | search LSP document symbols in the current buffer
+| Command                  | Description
+| ---                      | ---
+| FuzzyLspDocumentSymbols  | search LSP symbols in the current buffer
+| FuzzyLspWorkspaceSymbols | search LSP symbols in the current workspace
