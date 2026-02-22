@@ -1,6 +1,6 @@
 vim9script
 
-import autoload 'fuzzbox/selector.vim'
+import autoload 'fuzzbox/internal/selector.vim'
 import autoload 'fuzzbox/popup.vim'
 
 import autoload 'lsp/lsp.vim'
@@ -16,7 +16,7 @@ var async_limit = 200
 
 def ReplyCb(_: dict<any>, reply: list<dict<any>>)
     if empty(cur_pattern) || reply->empty()
-        selector.UpdateResults([], [])
+        selector.UpdateMenu([], [])
         popup.SetCounter(null)
         return
     endif
@@ -45,7 +45,7 @@ def ReplyCb(_: dict<any>, reply: list<dict<any>>)
         return str
     })
 
-    selector.UpdateResults(str_list, hl_list)
+    selector.UpdateMenu(str_list, hl_list)
 enddef
 
 def Input(wid: number, result: string)
