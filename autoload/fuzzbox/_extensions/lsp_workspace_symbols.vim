@@ -34,8 +34,13 @@ def ReplyCb(_: dict<any>, reply: list<dict<any>>)
         var kind = symbol.SymbolKindToName(v.kind)->tolower()
         var str = printf('%s:%d:%d %s <%s>', fname, lnum, col, v.name, kind)
 
-        var hl_start = matchstrpos(str, cur_pattern, matchstrpos(str, sep_pattern)[2])[1]
-        add(hl_list, [i + 1, hl_start + 1, hl_len])
+        var offset = matchstrpos(str, sep_pattern)[2]
+        var positions = matchfuzzypos([str[offset : -1]], cur_pattern)[1]
+        if !empty(positions)
+            for n in positions[0]
+                add(hl_list, [i + 1] + [n + offset + 1])
+            endfor
+        endif
 
         return str
     })
