@@ -1,7 +1,7 @@
 vim9script
 
-import autoload 'fuzzbox/internal/selector.vim'
 import autoload 'fuzzbox/popup.vim'
+import autoload 'fuzzbox/selector.vim'
 
 import autoload 'lsp/lsp.vim'
 import autoload 'lsp/buffer.vim' as buf
@@ -12,11 +12,11 @@ var symtable: list<dict<any>>
 var lspserver: dict<any>
 var cur_pattern: string
 
-var async_limit = 200
+var async_limit = g:fuzzbox_async_limit
 
 def ReplyCb(_: dict<any>, reply: list<dict<any>>)
     if empty(cur_pattern) || reply->empty()
-        selector.UpdateMenu([], [])
+        popup.UpdateMenu([], [])
         popup.SetCounter(null)
         return
     endif
@@ -45,7 +45,7 @@ def ReplyCb(_: dict<any>, reply: list<dict<any>>)
         return str
     })
 
-    selector.UpdateMenu(str_list, hl_list)
+    popup.UpdateMenu(str_list, hl_list)
 enddef
 
 def Input(wid: number, result: string)
