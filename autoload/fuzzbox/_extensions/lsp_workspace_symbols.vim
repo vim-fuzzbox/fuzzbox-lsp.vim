@@ -15,9 +15,13 @@ var cur_pattern: string
 var async_limit = g:fuzzbox_async_limit
 
 def ReplyCb(_: dict<any>, reply: list<dict<any>>)
-    if empty(cur_pattern) || reply->empty()
+    if empty(cur_pattern)
         popup.UpdateMenu([], [])
         popup.SetCounter(null)
+        return
+    elseif reply->empty()
+        popup.UpdateMenu([], [])
+        popup.SetCounter(0)
         return
     endif
 
@@ -54,6 +58,7 @@ def Input(wid: number, result: string)
         popup.UpdateMenu([], [])
         return
     endif
+    popup.SetLoading()
     lspserver.rpc_a('workspace/symbol', {query: result}, ReplyCb)
 enddef
 
