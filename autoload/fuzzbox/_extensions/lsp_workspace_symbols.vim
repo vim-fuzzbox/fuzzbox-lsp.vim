@@ -51,6 +51,7 @@ enddef
 def Input(wid: number, result: string)
     cur_pattern = result
     if empty(result)
+        popup.UpdateMenu([], [])
         return
     endif
     lspserver.rpc_a('workspace/symbol', {query: result}, ReplyCb)
