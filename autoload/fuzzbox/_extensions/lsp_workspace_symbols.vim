@@ -61,6 +61,12 @@ def Input(wid: number, pattern: string)
     lspserver.rpc_a('workspace/symbol', {query: pattern}, ReplyCb)
 enddef
 
+def Close(wid: number)
+    # release memory
+    symtable = [{}]
+    lspserver = {}
+enddef
+
 export def Start(opts: dict<any> = {})
     opts.title = has_key(opts, 'title') ? opts.title : 'LSP Workspace Symbols'
 
@@ -75,6 +81,7 @@ export def Start(opts: dict<any> = {})
 
     var wids = selector.Start([], extend(opts, {
         input_cb: function('Input'),
+        close_cb: function('Close'),
         counter: false
      }))
 
