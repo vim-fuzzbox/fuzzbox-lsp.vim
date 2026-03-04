@@ -3,11 +3,7 @@ vim9script
 import autoload 'fuzzbox/selector.vim'
 import autoload 'fuzzbox/popup.vim'
 
-import autoload 'lsp/lsp.vim'
-import autoload 'lsp/buffer.vim' as buf
-import autoload 'lsp/util.vim'
-import autoload 'lsp/symbol.vim'
-import autoload 'lsp/offset.vim'
+import autoload './lsp/lsp.vim'
 
 var separator = g:fuzzbox_menu_separator
 
@@ -26,7 +22,7 @@ def ParseResult(result: string): list<any>
     })
     var range = symtable[idx].range
     try
-        offset.DecodePosition(lspserver, bufnr, range.start)
+        lsp.DecodePosition(lspserver, bufnr, range.start)
     catch
         echo 'Fuzzbox: error decoding lsp offset position ' .. v:exception .. ' ' .. v:throwpoint
     endtry
@@ -113,7 +109,7 @@ def ProcessSymbolInfoTable(symbolInfoTable: list<dict<any>>,
         symbolTable: list<dict<any>>)
 
     for syminfo in symbolInfoTable
-        var symbolType = symbol.SymbolKindToName(syminfo.kind)->tolower()
+        var symbolType = lsp.SymbolKindToName(syminfo.kind)->tolower()
         var text = syminfo.name
         if syminfo->has_key('containerName') && !syminfo.containerName->empty()
             text ..= $' [{syminfo.containerName}]'
@@ -132,7 +128,7 @@ def ProcessDocSymbolTable(docSymbolTable: list<dict<any>>,
         parentName: string = '')
 
     for syminfo in docSymbolTable
-        var symbolType = symbol.SymbolKindToName(syminfo.kind)->tolower()
+        var symbolType = lsp.SymbolKindToName(syminfo.kind)->tolower()
         var range: dict<dict<number>> = syminfo.selectionRange
         var lnum = range.start.line + 1
         var text = $'{syminfo.name} {parentName != null_string ? parentName : ""} <{symbolType}>'
@@ -158,7 +154,7 @@ export def Start(opts: dict<any> = {})
         return
     endif
 
-    lspserver = buf.BufLspServerGet(bufnr(), 'documentSymbol')
+    lspserver = lsp.BufLspServerGet(bufnr(), 'documentSymbol')
     if lspserver->empty()
         echo 'LSP server not found'
         return
@@ -201,6 +197,6 @@ export def Start(opts: dict<any> = {})
         win_execute(wids.menu, $'syn match NonText "<\w\+>"')
     enddef
 
-    var params = {textDocument: {uri: util.LspFileToUri(filename)}}
+    var params = {textDocument: {uri: lsp.LspFileToUri(filename)}}
     lspserver.rpc_a('textDocument/documentSymbol', params, ReplyCb)
 enddef

@@ -3,10 +3,7 @@ vim9script
 import autoload 'fuzzbox/popup.vim'
 import autoload 'fuzzbox/selector.vim'
 
-import autoload 'lsp/lsp.vim'
-import autoload 'lsp/buffer.vim' as buf
-import autoload 'lsp/util.vim'
-import autoload 'lsp/symbol.vim'
+import autoload './lsp/lsp.vim'
 
 var symtable: list<dict<any>>
 var lspserver: dict<any>
@@ -30,11 +27,11 @@ def ReplyCb(_: dict<any>, reply: list<dict<any>>)
     var hl_list = []
     var sep_pattern = '\:\d\+:\d\+'
     var str_list = reply[: async_limit]->map((i, v) => {
-        var path = util.LspUriToFile(v.location.uri)
+        var path = lsp.LspUriToFile(v.location.uri)
         var fname = fnamemodify(path, ':p:~:.')
         var lnum = v.location.range.start.line + 1
         var col = v.location.range.start.character + 1
-        var kind = symbol.SymbolKindToName(v.kind)->tolower()
+        var kind = lsp.SymbolKindToName(v.kind)->tolower()
         var str = printf('%s:%d:%d %s <%s>', fname, lnum, col, v.name, kind)
 
         var offset = matchstrpos(str, sep_pattern)[2]
@@ -70,7 +67,7 @@ enddef
 export def Start(opts: dict<any> = {})
     opts.title = has_key(opts, 'title') ? opts.title : 'LSP Workspace Symbols'
 
-    lspserver = buf.BufLspServerGet(bufnr(), 'workspaceSymbol')
+    lspserver = lsp.BufLspServerGet(bufnr(), 'workspaceSymbol')
     if lspserver->empty()
         echo 'LSP server not found'
         return
