@@ -11,7 +11,7 @@ var cur_pattern: string
 
 var async_limit = g:fuzzbox_async_limit
 
-def ReplyCb(_: dict<any>, reply: list<dict<any>>)
+def ReplyCb(_: dict<any>, reply: list<dict<any>>, ...rest: list<any>)
     if empty(cur_pattern)
         popup.UpdateMenu([], [])
         popup.SetCounter(null)

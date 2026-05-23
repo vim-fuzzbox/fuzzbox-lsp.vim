@@ -168,7 +168,7 @@ export def Start(opts: dict<any> = {})
         return
     endif
 
-    def ReplyCb(_: dict<any>, reply: list<dict<any>>)
+    def ReplyCb(_: dict<any>, reply: list<dict<any>>, ...rest: list<any>)
         if reply->empty()
             echo 'LSP reply is empty'
             return
