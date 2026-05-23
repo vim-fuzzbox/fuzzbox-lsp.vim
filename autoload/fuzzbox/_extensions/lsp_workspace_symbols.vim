@@ -65,6 +65,11 @@ def Close(wid: number)
 enddef
 
 export def Start(opts: dict<any> = {})
+    if !exists('g:loaded_lsp')
+        echo 'LSP plugin not loaded'
+        return
+    endif
+
     opts.title = has_key(opts, 'title') ? opts.title : 'LSP Workspace Symbols'
 
     lspserver = lsp.BufLspServerGet(bufnr(), 'workspaceSymbol')
