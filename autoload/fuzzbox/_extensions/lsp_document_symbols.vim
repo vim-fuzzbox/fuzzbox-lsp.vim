@@ -134,7 +134,7 @@ def ProcessDocSymbolTable(docSymbolTable: list<dict<any>>,
         var text = $'{syminfo.name} {parentName != null_string ? parentName : ""} <{symbolType}>'
         symbolTable->add({text: text, range: range, lnum: lnum})
 
-        if syminfo->has_key('children')
+        if syminfo->has_key('children') && !syminfo.children->empty()
             # Process all the child symbols
             ProcessDocSymbolTable(syminfo.children, symbolTable,
                 syminfo.name)
