@@ -23,3 +23,17 @@ git clone https://github.com/vim-fuzzbox/fuzzbox-lsp.vim ~/.vim/pack/plugins/sta
 | ---                      | ---
 | FuzzyLspDocumentSymbols  | search LSP symbols in the current buffer
 | FuzzyLspWorkspaceSymbols | search LSP symbols in the current workspace
+
+## Mappings
+
+This extension does not add any mappings automatically but you can easily add
+some to your vimrc, e.g.
+
+```vim
+" Normal mode
+nnoremap <leader>fo :FuzzyLspDocumentSymbols<CR>
+nnoremap <leader>fs :FuzzyLspWorkspaceSymbols<CR>
+" Visual mode
+xnoremap <leader>fo <Cmd>FuzzyLspDocumentSymbols<CR>
+xnoremap <leader>fs <Cmd>FuzzyLspWorkspaceSymbols<CR>
+```
